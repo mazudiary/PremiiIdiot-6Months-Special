@@ -523,7 +523,7 @@ function toggleUI() {
   ui.classList.toggle("minimized");
 }
 
-// Request fullscreen on mobile for better experience
+// Request fullscreen on mobile for better experience - delay to allow camera permission first
 if (isMobile) {
   setTimeout(() => {
     if (document.documentElement.requestFullscreen) {
@@ -531,7 +531,7 @@ if (isMobile) {
     } else if (document.documentElement.webkitRequestFullscreen) {
       document.documentElement.webkitRequestFullscreen().catch(() => {});
     }
-  }, 1000);
+  }, 3000);
 }
 
 // Battery and connection awareness for mobile
@@ -691,14 +691,22 @@ hands.onResults(onResults);
 const cameraWidth = isMobile ? (isSmallScreen ? 320 : 480) : 640;
 const cameraHeight = isMobile ? (isSmallScreen ? 240 : 360) : 480;
 
+// Initialize camera with proper mobile constraints
 const cameraUtils = new Camera(videoElement, {
   onFrame: async () => {
     await hands.send({ image: videoElement });
   },
   width: cameraWidth,
   height: cameraHeight,
+  facingMode: "user", // Front camera for mobile
 });
-cameraUtils.start();
+
+// Start camera with error handling
+cameraUtils.start().catch((error) => {
+  console.error("Camera start error:", error);
+  document.getElementById("loading").innerHTML =
+    "❌ Camera Error<br/><span style='font-size: 14px'>Please refresh and allow camera access</span>";
+});
 
 // Resize and orientation change handler
 function handleResize() {
@@ -712,12 +720,23 @@ window.addEventListener("orientationchange", () => {
   setTimeout(handleResize, 100); // Small delay for orientation to settle
 });
 
-// Prevent default touch behaviors on mobile
+// Prevent default touch behaviors on mobile - but allow for dialogs and interactions
 if (isMobile) {
+  // Only prevent touch behaviors after camera has started
+  let cameraStarted = false;
+
+  setTimeout(() => {
+    cameraStarted = true;
+  }, 2000);
+
   document.addEventListener(
     "touchstart",
     (e) => {
-      if (e.target.id !== "toggle-ui") {
+      if (
+        cameraStarted &&
+        e.target.id !== "toggle-ui" &&
+        e.target.tagName !== "VIDEO"
+      ) {
         e.preventDefault();
       }
     },
@@ -727,13 +746,17 @@ if (isMobile) {
   document.addEventListener(
     "touchmove",
     (e) => {
-      e.preventDefault();
+      if (cameraStarted && e.target.tagName !== "VIDEO") {
+        e.preventDefault();
+      }
     },
     { passive: false }
   );
 
   document.addEventListener("gesturestart", (e) => {
-    e.preventDefault();
+    if (cameraStarted) {
+      e.preventDefault();
+    }
   });
 }
 
