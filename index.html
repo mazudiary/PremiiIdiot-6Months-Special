@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Interactive Hand-Controlled Particles</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="loading">
+      Initialize Camera & AI...<br /><span style="font-size: 16px"
+        >Please allow camera access.</span
+      >
+    </div>
+
+    <button id="toggle-ui" onclick="toggleUI()">ℹ️</button>
+
+    <div id="ui">
+      <div
+        class="instruction"
+        style="color: #ff69b4; font-weight: bold; margin-bottom: 8px"
+      >
+        💕 6 Months of Love Across Distance 💕
+      </div>
+      <div class="instruction">
+        <span class="highlight">Hand Position:</span> Change Color 🌈
+      </div>
+      <div class="instruction">
+        <span class="highlight">Pinch/Open:</span> Grow Our Love 💗
+      </div>
+      <div class="instruction">-----------------------------</div>
+      <div class="instruction">
+        <span class="highlight">1 Finger:</span> Beating Heart ❤️
+      </div>
+      <div class="instruction">
+        <span class="highlight">2 Fingers:</span> Two Hearts Together 💕
+      </div>
+      <div class="instruction">
+        <span class="highlight">3 Fingers:</span> Forever (Infinity) ♾️
+      </div>
+      <div class="instruction">
+        <span class="highlight">4 Fingers:</span> Our 6 Months 📅
+      </div>
+      <div class="instruction">
+        <span class="highlight">5 Fingers:</span> Bridge Between Us 🌉
+      </div>
+      <div class="instruction">
+        <span class="highlight">6 Fingers:</span> Intertwined Hearts 💞
+      </div>
+      <div class="instruction">
+        <span class="highlight">7 Fingers:</span> Love Letter 💌
+      </div>
+      <div class="instruction">
+        <span class="highlight">8 Fingers:</span> Rose for You 🌹
+      </div>
+      <div class="instruction">
+        <span class="highlight">9 Fingers:</span> Promise Ring 💍
+      </div>
+      <div class="instruction">
+        <span class="highlight">10 Fingers:</span> Counting Days ⏰
+      </div>
+      <div class="instruction">-----------------------------</div>
+      <div id="status">💖 LILI - Waiting for your hand...</div>
+    </div>
+
+    <div id="video-container">
+      <video id="input_video"></video>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

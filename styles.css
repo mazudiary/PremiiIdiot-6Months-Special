@@ -1,0 +1,257 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: #000;
+  font-family: "Courier New", Courier, monospace;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  /* Support for notch/safe areas on mobile */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+* {
+  -webkit-overflow-scrolling: touch;
+}
+canvas {
+  display: block;
+}
+#loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #00ffcc;
+  font-size: 24px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #00ffcc;
+  pointer-events: none;
+  max-width: 90%;
+  box-sizing: border-box;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+#ui {
+  position: absolute;
+  top: max(10px, env(safe-area-inset-top));
+  left: max(10px, env(safe-area-inset-left));
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 15px;
+  border-radius: 8px;
+  pointer-events: none;
+  user-select: none;
+  max-width: calc(100% - 20px);
+  box-sizing: border-box;
+  transition: opacity 0.3s, transform 0.3s;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+#ui.minimized {
+  opacity: 0.3;
+  transform: scale(0.9);
+}
+#toggle-ui {
+  position: absolute;
+  top: max(10px, env(safe-area-inset-top));
+  right: max(10px, env(safe-area-inset-right));
+  background: rgba(0, 255, 204, 0.3);
+  color: #00ffcc;
+  border: 1px solid #00ffcc;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 1000;
+  display: none;
+  transition: all 0.3s;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+#toggle-ui:active {
+  transform: scale(0.9);
+  background: rgba(0, 255, 204, 0.5);
+}
+.instruction {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+.highlight {
+  color: #00ffcc;
+  font-weight: bold;
+}
+#video-container {
+  position: absolute;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  right: max(10px, env(safe-area-inset-right));
+  width: 160px;
+  height: 120px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  transform: scaleX(-1); /* Mirror video */
+  opacity: 0.7;
+  overflow: hidden;
+  transition: opacity 0.3s;
+}
+#video-container:hover {
+  opacity: 1;
+}
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+  #ui {
+    top: 5px;
+    left: 5px;
+    padding: 8px;
+    font-size: 11px;
+    max-width: calc(100% - 100px);
+  }
+  .instruction {
+    margin-bottom: 3px;
+    font-size: 11px;
+  }
+  #loading {
+    font-size: 18px;
+    padding: 15px;
+  }
+  #video-container {
+    width: 100px;
+    height: 75px;
+    bottom: 5px;
+    right: 5px;
+  }
+  #toggle-ui {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #ui {
+    padding: 6px;
+    font-size: 9px;
+    max-width: calc(100% - 80px);
+  }
+  .instruction {
+    margin-bottom: 2px;
+    font-size: 9px;
+  }
+  #loading {
+    font-size: 16px;
+    padding: 10px;
+  }
+  #video-container {
+    width: 80px;
+    height: 60px;
+    bottom: 5px;
+    right: 5px;
+  }
+  #toggle-ui {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+  }
+}
+
+/* Landscape mode optimization */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  #ui {
+    padding: 5px;
+    font-size: 9px;
+    max-width: 40%;
+  }
+  .instruction {
+    margin-bottom: 2px;
+    font-size: 9px;
+  }
+  #loading {
+    font-size: 14px;
+    padding: 8px;
+  }
+  #video-container {
+    width: 70px;
+    height: 52px;
+  }
+}
+
+/* Portrait mode - very tall screens */
+@media screen and (min-aspect-ratio: 1/2) and (max-width: 480px) {
+  #ui {
+    max-width: calc(100% - 70px);
+  }
+}
+
+/* Extra small devices */
+@media screen and (max-width: 360px) {
+  #ui {
+    font-size: 8px;
+    padding: 5px;
+  }
+  .instruction {
+    font-size: 8px;
+    margin-bottom: 1px;
+  }
+  #video-container {
+    width: 60px;
+    height: 45px;
+  }
+  #loading {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  #ui {
+    border: 0.5px solid rgba(0, 255, 204, 0.2);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  #loading {
+    background: rgba(0, 0, 0, 0.9);
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  #ui,
+  #toggle-ui,
+  #video-container {
+    transition: none;
+  }
+}
+
+/* iPhone X and newer safe areas */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+}
